@@ -12,7 +12,7 @@ module.exports = merge(common, {
         contentBase: path.resolve(__dirname, '../dist'),
         host: 'localhost',
         compress: false,//不压缩
-        port: 8765,
+        port: 8888,
         historyApiFallback: true, //不跳转
         inline: true,
         hot: true,

@@ -31,7 +31,6 @@ export default {
     methods: {
         imgOnload(){
             this.ctx.drawImage(this.img,0,0);
-
         },
         mirror(){
             let width = this.img.width, height = this.img.height;
@@ -39,14 +38,25 @@ export default {
             this.ctx.clearRect(width+20,0,this.canvas.width,this.canvas.height);
             let imgDataBuf = this.ctx.createImageData(width,height);
             for(let i=0; i<height; i++){
-                for(let j=0; j<width*4; j+=4){
-                    imgDataBuf.data[i*4*width +j +0] = data[i*4*width +(width-1)*4-j +0];
-                    imgDataBuf.data[i*4*width +j +1] = data[i*4*width +(width-1)*4-j +1];;
-                    imgDataBuf.data[i*4*width +j +2] = data[i*4*width +(width-1)*4-j +2];;
-                    imgDataBuf.data[i*4*width +j +3] = data[i*4*width +(width-1)*4-j +3];;
+                for(let j=0; j<width; j++){
+                    imgDataBuf.data[(i*width+j)*4 +0] = data[((i+1)*width-j)*4 +0];
+                    imgDataBuf.data[(i*width+j)*4 +1] = data[((i+1)*width-j)*4 +1];
+                    imgDataBuf.data[(i*width+j)*4 +2] = data[((i+1)*width-j)*4 +2];
+                    imgDataBuf.data[(i*width+j)*4 +3] = data[((i+1)*width-j)*4 +3];
+                    // if(i==10){
+                    //     imgDataBuf.data[(i*width+j)*4 +0] = 255;
+                    //     imgDataBuf.data[(i*width+j)*4 +1] = 0;
+                    //     imgDataBuf.data[(i*width+j)*4 +2] = 0;
+                    //     imgDataBuf.data[(i*width+j)*4 +3] = 255;
+                    // }
                 }
             }
             this.ctx.putImageData(imgDataBuf,this.img.width+20,0);
+
+            // this.ctx.translate(width+20+width/2,0);
+            // this.ctx.scale(-1,1);
+            // this.ctx.drawImage(this.img,-width/2, 0);
+            // this.ctx.translate(-(width+20+width/2),0);
         },
         film(){
             let data = this.imgData.data;
@@ -69,9 +79,9 @@ export default {
                 for ( let y = 1; y < height-1; y++) {    
                      //当前像素数点
                     let idx = (x + y * width) * 4; 
-                    //上一行对应的像素点      
+                    //上一个对应的像素点      
                     let bidx = ((x-1) + y * width) * 4;
-                    //下一行对应的像素点
+                    //下一个对应的像素点
                     let aidx = ((x+1) + y * width) * 4;
 
                     //计算当前像素点的rgb的值
